@@ -67,7 +67,7 @@ import { getDatabase, ref, push, onChildAdded, remove, onChildRemoved } from 'ht
 // ★ firebaseConfigを設定する  
 
 const firebaseConfig = {
-    apiKey: "AIzaSyClGxjnqMbQyO0nDpuAp9bpTqnwXj2Pp8E",
+    apiKey: "",
     authDomain: "training-i-kamigaki.firebaseapp.com",
     databaseURL: "https://training-i-kamigaki-default-rtdb.firebaseio.com",
     projectId: "training-i-kamigaki",
@@ -120,13 +120,13 @@ $('#send-button').on('click', function () {
 
 onChildAdded(messagesRef, function (snapshot) {
     // ★ メッセージデータを取得し、dataに格納
-    
+    const messageDate = snapshot.val()
 
     // ★ ユニークIDを取得し、keyに格納
+    const key = snapshot.key
 
-
-    // const html = `<p id="${key}" class="message-item">${data.name}: ${data.message}</p>`;
-    // $('#chat-display').append(html); // #chat-display の最後に追加
+    const html = `<p id="${key}" class="message-item">${messageDate.name}: ${messageDate.message}</p>`;
+    $('#chat-display').append(html); // #chat-display の最後に追加
 });
 
 // ----------------------------
@@ -135,15 +135,15 @@ onChildAdded(messagesRef, function (snapshot) {
 
 // ★ 以下のコードを有効化
 
-// $('body').on('click', '.message-item', function () {
-//     const isDelete = confirm('メッセージを削除しますか？');
-//     // はいがクリックされた場合
-//     if (isDelete) {
-//         const key = $(this).attr('id'); // クリックされた要素自体のid名（ユニークID）を取得
-//         const targetMessageRef = ref(db, `messages/${key}`); // 削除対象のメッセージ参照を取得
-//         remove(targetMessageRef); // メッセージを削除
-//     }
-// });
+$('body').on('click', '.message-item', function () {
+    const isDelete = confirm('メッセージを削除しますか？');
+    // はいがクリックされた場合
+    if (isDelete) {
+        const key = $(this).attr('id'); // クリックされた要素自体のid名（ユニークID）を取得
+        const targetMessageRef = ref(db, `messages/${key}`); // 削除対象のメッセージ参照を取得
+        remove(targetMessageRef); // メッセージを削除
+    }
+});
 
 // ----------------------------
 // おまけ: メッセージ削除時の処理
@@ -151,10 +151,10 @@ onChildAdded(messagesRef, function (snapshot) {
 
 // ★ 以下のコードを有効化
 
-// onChildRemoved(messagesRef, function (data) {
-//     const key = data.key; // ユニークIDを取得
-//     $(`#${key}`).remove(); // メッセージの表示を削除
-// });
+onChildRemoved(messagesRef, function (data) {
+    const key = data.key; // ユニークIDを取得
+    $(`#${key}`).remove(); // メッセージの表示を削除
+});
 </script>
 </body>
 </html>
