@@ -103,10 +103,14 @@ $('#send-button').on('click', function () {
     console.log(name, message);
 
     // ★ メッセージデータを作成
-
+    const messageDate = {
+            name: name,
+            message: message,
+            createdAt: new Date().toLocaleString('ja-JP'),
+    };
 
     // ★ messages/{ユニークID} の配下にメッセージデータを送信
-
+    const newMessageRef = push(messagesRef, messageDate);
 
 });
 
